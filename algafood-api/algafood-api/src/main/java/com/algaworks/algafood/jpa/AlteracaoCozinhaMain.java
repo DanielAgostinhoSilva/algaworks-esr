@@ -6,7 +6,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
@@ -15,16 +15,13 @@ public class InclusaoCozinhaMain {
 
         CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 
-        Cozinha cozinha1 = new Cozinha();
-        cozinha1.setNome("Brasileira");
+        Cozinha cozinha = new Cozinha();
+        cozinha.setNome("Brasileira");
+        cozinha.setId(1l);
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Japonesa");
 
-        Cozinha cozinha1Salva = cadastroCozinha.salvar(cozinha1);
-        Cozinha cozinha2Salva = cadastroCozinha.salvar(cozinha2);
+        Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinha);
 
-        System.out.println(cozinha1Salva);
-        System.out.println(cozinha2Salva);
+        System.out.println(cozinhaSalva);
     }
 }
