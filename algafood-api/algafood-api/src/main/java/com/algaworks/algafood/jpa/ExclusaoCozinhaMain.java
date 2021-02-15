@@ -22,6 +22,6 @@ public class ExclusaoCozinhaMain {
 
         cozinhaRepositoryImpl.remover(cozinha);
 
-        cozinhaRepositoryImpl.todas().forEach(System.out::println);
+        cozinhaRepositoryImpl.listar().forEach(System.out::println);
     }
 }
