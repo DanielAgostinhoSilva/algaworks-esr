@@ -16,7 +16,7 @@ public class ConsoultaCozinhaMain {
 
         CozinhaRepositoryImpl cozinhaRepositoryImpl = applicationContext.getBean(CozinhaRepositoryImpl.class);
 
-        Cozinha cozinha = cozinhaRepositoryImpl.porId(1l);
+        Cozinha cozinha = cozinhaRepositoryImpl.buscar(1l);
         System.out.println(cozinha);
     }
 }
