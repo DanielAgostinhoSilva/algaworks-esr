@@ -1,0 +1,21 @@
+package com.algaworks.algafood.jpa;
+
+import com.algaworks.algafood.AlgafoodApiApplication;
+import com.algaworks.algafood.domain.repository.EstadoRepository;
+import com.algaworks.algafood.infrastructure.repository.EstadoRepositoryImpl;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+
+public class ConsoultaEstadoMain {
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
+                .web(WebApplicationType.NONE)
+                .run(args);
+
+        EstadoRepository repository = applicationContext.getBean(EstadoRepositoryImpl.class);
+
+        repository.todas().forEach(System.out::println);
+    }
+}
