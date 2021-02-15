@@ -16,6 +16,6 @@ public class ConsoultaEstadoMain {
 
         EstadoRepository repository = applicationContext.getBean(EstadoRepositoryImpl.class);
 
-        repository.todas().forEach(System.out::println);
+        repository.listar().forEach(System.out::println);
     }
 }
