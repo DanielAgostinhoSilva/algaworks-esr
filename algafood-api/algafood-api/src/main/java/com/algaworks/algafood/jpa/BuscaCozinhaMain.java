@@ -18,7 +18,7 @@ public class BuscaCozinhaMain {
 
         CozinhaRepositoryImpl cozinhaRepositoryImpl = applicationContext.getBean(CozinhaRepositoryImpl.class);
 
-        List<Cozinha> cozinhas = cozinhaRepositoryImpl.todas();
+        List<Cozinha> cozinhas = cozinhaRepositoryImpl.listar();
 
         cozinhas.forEach(System.out::println);
     }
