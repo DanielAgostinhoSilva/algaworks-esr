@@ -1,9 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.infrastructure.repository.CozinhaRepositoryImpl;
 import com.algaworks.algafood.infrastructure.repository.RestauranteRepositoryImpl;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -20,7 +18,7 @@ public class ConsoultaRestauranteMain {
 
         RestauranteRepositoryImpl repository = applicationContext.getBean(RestauranteRepositoryImpl.class);
 
-        List<Restaurante> todosRestuarantes = repository.todas();
+        List<Restaurante> todosRestuarantes = repository.listar();
         todosRestuarantes.forEach(System.out::println);
     }
 }
