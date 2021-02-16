@@ -1,0 +1,17 @@
+package com.algaworks.algafood.domain.service;
+
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class CadastroCozinhaService {
+
+    private CozinhaRepository cozinhaRepository;
+
+    public Cozinha salvar(Cozinha cozinha) {
+        return cozinhaRepository.salvar(cozinha);
+    }
+}
