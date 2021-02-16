@@ -21,7 +21,7 @@ public class AlteracaoCozinhaMain {
         cozinha.setId(1l);
 
 
-        Cozinha cozinhaSalva = cozinhaRepositoryImpl.adicionar(cozinha);
+        Cozinha cozinhaSalva = cozinhaRepositoryImpl.salvar(cozinha);
 
         System.out.println(cozinhaSalva);
     }
