@@ -7,7 +7,6 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +51,7 @@ public class CozinhaController {
 
         BeanUtils.copyProperties(cozinha, conzinhaEncontrada, "id" );
 
-        return ResponseEntity.ok(cozinhaRepository.salvar(conzinhaEncontrada));
+        return ResponseEntity.ok(cadastroCozinha.salvar(conzinhaEncontrada));
     }
 
 
