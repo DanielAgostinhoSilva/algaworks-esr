@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,23 @@ public class CozinhaController {
         BeanUtils.copyProperties(cozinha, conzinhaEncontrada, "id" );
 
         return ResponseEntity.ok(cozinhaRepository.salvar(conzinhaEncontrada));
+    }
+
+
+    @DeleteMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId){
+        Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
+
+        if (cozinha == null)
+            return ResponseEntity.notFound().build();
+
+        try {
+            cozinhaRepository.remover(cozinha);
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }
