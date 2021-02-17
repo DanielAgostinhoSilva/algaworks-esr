@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CidadeRepository {
     List<Cidade> todas();
-    Cidade porId(Long id);
-    Cidade adicionar(Cidade idade);
-    void remover(Cidade cidade);
+    Cidade buscar(Long id);
+    Cidade salvar(Cidade idade);
+    void remover(Long id);
 }
