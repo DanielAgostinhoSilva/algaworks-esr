@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class CadastroCidadeService {
@@ -18,21 +20,21 @@ public class CadastroCidadeService {
 
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
-        Estado estado = estadoRepository.buscar(estadoId);
+        Optional<Estado> estado = estadoRepository.findById(estadoId);
 
-        if (estado == null)
+        if (estado.isEmpty())
             throw new EntidadeNaoEncontradaException(
                     String.format("Nao existe cadastro de estado com codigo %d", estadoId)
             );
 
-        cidade.setEstado(estado);
+        cidade.setEstado(estado.get());
 
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
 
     public void excluir(Long id) {
         try {
-            cidadeRepository.remover(id);
+            cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Nao existe cadastro de cidade com codigo %d", id)
