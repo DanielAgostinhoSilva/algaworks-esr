@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RestController
@@ -30,8 +32,28 @@ public class TesteController {
         return cozinhaRepository.findByNomeContaining(nome);
     }
 
+    @GetMapping("/cozinha/existe")
+    public boolean cozinhasExiste(@RequestParam("nome") String nome) {
+        return cozinhaRepository.existsByNome(nome);
+    }
+
+    @GetMapping("/restaurante/primeiro-por-nome")
+    public Optional<Restaurante> buscarPrimeiroRestuarantePorNome(@RequestParam("nome") String nome) {
+        return restauranteRepository.findFirstByNomeContaining(nome);
+    }
+
+    @GetMapping("/restaurante/dois-primeiro-por-nome")
+    public List<Restaurante> buscarDoisPrimeiroPorNome(@RequestParam("nome") String nome) {
+        return restauranteRepository.findTop2ByNomeContaining(nome);
+    }
+
     @GetMapping("/restaurante/por-taxa-frete")
     public List<Restaurante> cozinhasPorNome(BigDecimal taxaInicial, BigDecimal taxaFinal) {
-        return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+        return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
+    }
+
+    @GetMapping("/restaurante/count-cozinha")
+    public Integer cozinhasPorNome(Long cozinhaId) {
+        return restauranteRepository.countByCozinhaId(cozinhaId);
     }
 }
