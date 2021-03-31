@@ -5,7 +5,6 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,8 +52,8 @@ public class TesteController {
     }
 
     @GetMapping("/restaurante/por-taxa-frete")
-    public List<Restaurante> consultarPortaxafrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
-        return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
+    public List<Restaurante> consultarPortaxafrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.consultarPorNome(nome, taxaInicial, taxaFinal);
     }
 
     @GetMapping("/restaurante/count-cozinha")
