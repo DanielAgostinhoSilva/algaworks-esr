@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RestauranteRepositoryImplQueries {
     List<Restaurante> consultarPorNome(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal);
+    List<Restaurante> findComFreteGratis(String nome);
 }
