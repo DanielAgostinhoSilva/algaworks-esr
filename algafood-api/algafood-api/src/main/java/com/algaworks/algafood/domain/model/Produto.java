@@ -1,9 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,6 +17,9 @@ public class Produto {
     private Long id;
 
     @Column( nullable = false)
+    private String nome;
+
+    @Column( nullable = false)
     private String descricao;
 
     @Column(nullable = false)
@@ -28,6 +29,6 @@ public class Produto {
     private Boolean ativo;
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn( name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 }
