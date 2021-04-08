@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, RestauranteRepositoryImplQueries,
         JpaSpecificationExecutor {
+
+    @Query("from Restaurante r join fetch r.cozinha left join fetch r.formasPagamento")
+    List<Restaurante> findAll();
+
     List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
