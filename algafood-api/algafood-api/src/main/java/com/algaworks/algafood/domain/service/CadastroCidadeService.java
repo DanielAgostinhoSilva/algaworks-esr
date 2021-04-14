@@ -15,20 +15,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CadastroCidadeService {
 
+    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Nao existe cadastro de cidade com codigo %d";
     private CidadeRepository cidadeRepository;
     private EstadoRepository estadoRepository;
+    private CadastroEstadoService cadastroEstadoService;
 
     public Cidade salvar(Cidade cidade) {
-        Long estadoId = cidade.getEstado().getId();
-        Optional<Estado> estado = estadoRepository.findById(estadoId);
-
-        if (estado.isEmpty())
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Nao existe cadastro de estado com codigo %d", estadoId)
-            );
-
-        cidade.setEstado(estado.get());
-
+        Estado estado = cadastroEstadoService.buscarOuFalhar(cidade.getEstado().getId());
+        cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
     }
 
@@ -37,9 +31,16 @@ public class CadastroCidadeService {
             cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Nao existe cadastro de cidade com codigo %d", id)
+                    String.format(MSG_CIDADE_NAO_ENCONTRADA, id)
             );
         }
+    }
+
+    public Cidade buscarOuFalhar(Long cidadeId) {
+        return cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
+                ));
     }
 
 
