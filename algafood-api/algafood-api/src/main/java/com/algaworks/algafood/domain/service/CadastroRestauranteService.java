@@ -13,21 +13,22 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CadastroRestauranteService {
+    private static String MSG_RESTURANTE_NAO_ENCONTRADO = "Nao existe cadastro de restaurante com codigo %d";
 
     private RestauranteRepository restauranteRepository;
-    private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cadastroCozinhaService;
 
     public Restaurante salvar(Restaurante restaurante) {
-        Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Nao existe cadastro de cozinha com codigo %d", cozinhaId)
-                ));
-
+        Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
         restaurante.setCozinha(cozinha);
-
         return restauranteRepository.save(restaurante);
     }
 
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_RESTURANTE_NAO_ENCONTRADO, restauranteId)
+                ));
+    }
 
 }
