@@ -21,6 +21,8 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/cidades")
 public class CidadeController {
@@ -43,7 +45,7 @@ public class CidadeController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody Cidade cidade) {
+	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
 		try {
 			return cadastroCidade.salvar(cidade);
 		} catch (EstadoNaoEncontradoException e) {
@@ -52,7 +54,7 @@ public class CidadeController {
 	}
 	
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@PathVariable Long cidadeId,
+	public Cidade atualizar(@PathVariable @Valid Long cidadeId,
 			@RequestBody Cidade cidade) {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
