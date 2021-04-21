@@ -4,19 +4,25 @@ import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class CadastroRestauranteService {
 
+    @Autowired
     private RestauranteRepository restauranteRepository;
-    private CadastroCozinhaService cadastroCozinhaService;
+
+    @Autowired
+    private CadastroCozinhaService cadastroCozinha;
 
     public Restaurante salvar(Restaurante restaurante) {
-        Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
+        Long cozinhaId = restaurante.getCozinha().getId();
+
+        Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+
         restaurante.setCozinha(cozinha);
+
         return restauranteRepository.save(restaurante);
     }
 
