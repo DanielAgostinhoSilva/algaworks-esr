@@ -1,16 +1,16 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,24 +19,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CadastroCozinhaIntegrationTest {
 
     @Autowired
-    private CadastroCozinhaService cadastroCozinhaService;
+    private CadastroCozinhaService cadastroCozinha;
 
     @Test
-    public void deve_cadastrar_cozinha_com_sucesso() {
+    public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() {
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome("Chinesa");
 
-        novaCozinha = cadastroCozinhaService.salvar(novaCozinha);
+        novaCozinha = cadastroCozinha.salvar(novaCozinha);
 
         assertThat(novaCozinha).isNotNull();
         assertThat(novaCozinha.getId()).isNotNull();
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void quando_cadastrar_uma_cozinha_sem_nome_deve_falhar(){
+    public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
 
-        cadastroCozinhaService.salvar(novaCozinha);
+        novaCozinha = cadastroCozinha.salvar(novaCozinha);
+    }
+
+    @Test(expected = EntidadeEmUsoException.class)
+    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+        cadastroCozinha.excluir(1L);
+    }
+
+    @Test(expected = CozinhaNaoEncontradaException.class)
+    public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+        cadastroCozinha.excluir(100L);
     }
 }
