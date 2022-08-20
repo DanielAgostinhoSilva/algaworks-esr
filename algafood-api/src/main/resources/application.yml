@@ -11,3 +11,15 @@ spring:
     user: root
     password: root
     locations: classpath:db/migration,classpath:db/testdata
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+      fail-on-ignored-properties: true
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  web:
+    resources:
+      add-mappings: false
