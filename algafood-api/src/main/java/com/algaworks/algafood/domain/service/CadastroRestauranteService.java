@@ -1,13 +1,12 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +23,19 @@ public class CadastroRestauranteService {
 
         return restauranteRepository.save(restaurante);
     }
+
+    @Transactional
+    public void ativar(long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.inativar();
+    }
+
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
