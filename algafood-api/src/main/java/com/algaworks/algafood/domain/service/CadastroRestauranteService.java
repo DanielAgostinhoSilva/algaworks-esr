@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class CadastroRestauranteService {
     private RestauranteRepository restauranteRepository;
     private CadastroCozinhaService cadastroCozinha;
     private CadastroCidadeService cadastroCidade;
+    private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
@@ -39,6 +41,20 @@ public class CadastroRestauranteService {
     public void inativar(long restauranteId) {
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
         restauranteAtual.inativar();
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+        restaurante.adicionarFormaPagamento(formaPagamento);
     }
 
 
