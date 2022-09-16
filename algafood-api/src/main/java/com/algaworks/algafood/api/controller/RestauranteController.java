@@ -4,14 +4,18 @@ import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.api.model.view.RestauranteProjecaoView;
+import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,10 +32,16 @@ public class RestauranteController {
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
     @GetMapping
-    public List<RestauranteModel> listar() {
-        return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
-    }
+    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+        List<Restaurante> pedidos = restauranteRepository.findAll();
+        List<RestauranteModel> pedidosModel = restauranteModelAssembler.toCollectionModel(pedidos);
 
+        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosModel);
+        RestauranteProjecaoView projecaoView = RestauranteProjecaoView.getProjecaoView(projecao);
+        pedidosWrapper.setSerializationView(projecaoView.getView());
+
+        return pedidosWrapper;
+    }
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
