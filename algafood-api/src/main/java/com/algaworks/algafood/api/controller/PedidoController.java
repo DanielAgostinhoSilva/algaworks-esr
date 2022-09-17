@@ -54,13 +54,6 @@ public class PedidoController {
         return pedidosWrapper;
     }
 
-//    @GetMapping
-//    public List<PedidoResumoModel> listar() {
-//        List<Pedido> todosPedidos = pedidoRepository.findAll();
-//
-//        return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
-//    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
